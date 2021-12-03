@@ -1,0 +1,11 @@
+.alterar-voltar a {
+    text-decoration: none;
+}
+
+.alterar-voltar a:hover {
+    opacity: 0.6;
+}
+
+.alterar-voltar a svg {
+    margin-right: 7px;
+}
