@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Endereco } from '../../models/interfaces/EnderecoInterface';
 import EnderecoService from '../../services/EnderecoService';
 import ModalConfirmacao from '../Modals/ModalConfirmacao';
 import CardEnderecoSalvo from './Components/CardEnderecoSalvo';
 
 function Salvos() {
 
-    const [enderecos, setEnderecos] = useState([]);
-    const [favoritos, setFavoritos] = useState([]);
+    const [enderecos, setEnderecos] = useState<Endereco[]>([]);
+    const [favoritos, setFavoritos] = useState<number[]>([]);
 
     const [nomeExclusao, setNomeExclusao] = useState('');
     const [idExclusao, setIdExclusao] = useState(0);
@@ -26,19 +27,19 @@ function Salvos() {
         setFavoritos(enderecosFavoritos);
     }, []);
 
-    const alterarFavorito = id => {
+    const alterarFavorito = (id: number) => {
         const service = new EnderecoService();
         service.alterarSituacaoFavorito(id);
     }
 
-    const exibirModalExclusao = (id, nome) => {
+    const exibirModalExclusao = (id: number, nome: string) => {
         setNomeExclusao(nome);
         setIdExclusao(id);
         exibirModal();
     }
 
     const exibirModal = () => {
-        modalConfirmacao.current.exibirModal();
+        //modalConfirmacao.current.exibirModal();
     }
 
     const excluir = () => {
@@ -86,7 +87,7 @@ function Salvos() {
                         <p>Nenhum endereço salvo. Vá até o <Link to="/">Início</Link> e adicione um.</p>
                 }
 
-                <ModalConfirmacao
+                {/* <ModalConfirmacao
                     ref={modalConfirmacao}
                     titulo={'Confirmação de exclusão'}
                     texto={`Deseja excluir o endereço "${nomeExclusao}"?`}
@@ -96,7 +97,7 @@ function Salvos() {
                     textoBotaoPositivo={'Excluir'}
                     funcaoBotaoNegativo={naoExcluir}
                     funcaoBotaoPositivo={excluir}
-                />
+                /> */}
             </div>
         </div>
     );
