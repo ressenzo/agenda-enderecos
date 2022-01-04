@@ -16,7 +16,7 @@ export default class EnderecoService {
     public obterEnderecosSalvos(): Endereco[] {
         const enderecos = JSON.parse(localStorage.getItem(CHAVE_ENDERECOS) || '{}');
         
-        if (typeof enderecos === 'object') {
+        if (!enderecos.length || enderecos.length === 0) {
             return [];
         }
 
@@ -98,7 +98,7 @@ export default class EnderecoService {
     public obterEnderecosFavoritos(): number[] {
         const favoritos = JSON.parse(localStorage.getItem(CHAVE_ENDERECOS_FAVORITOS) || '{}');
 
-        if (typeof favoritos === 'object') {
+        if (!favoritos.length || favoritos.length === 0) {
             return [];
         }
 
