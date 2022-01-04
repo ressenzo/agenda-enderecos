@@ -5,7 +5,7 @@ const CHAVE_ENDERECOS_FAVORITOS = 'enderecos-favoritos';
 
 export default class EnderecoService {
 
-    adicionarEndereco(endereco: Endereco): void {
+    public adicionarEndereco(endereco: Endereco): void {
         const enderecosSalvos = this.obterEnderecosSalvos();
         const enderecos = [...enderecosSalvos];
         enderecos.push(endereco);
@@ -13,7 +13,7 @@ export default class EnderecoService {
         this.salvarEnderecosSalvos(enderecos);
     }
 
-    obterEnderecosSalvos(): Endereco[] {
+    public obterEnderecosSalvos(): Endereco[] {
         const enderecos = JSON.parse(localStorage.getItem(CHAVE_ENDERECOS) || '{}');
         
         if (typeof enderecos === 'object') {
@@ -23,16 +23,16 @@ export default class EnderecoService {
         return enderecos as Endereco[];
     }
 
-    obterEnderecoSalvo(id: number): Endereco {
+    public obterEnderecoSalvo(id: number): Endereco {
         const enderecos = this.obterEnderecosSalvos();
         return enderecos.filter((x: Endereco) => x.id === id)[0];
     }
 
-    salvarEnderecosSalvos(enderecos: Endereco[]): void {
+    public salvarEnderecosSalvos(enderecos: Endereco[]): void {
         localStorage.setItem(CHAVE_ENDERECOS, JSON.stringify(enderecos));
     }
 
-    procurarEnderecoSalvo(cep: string): boolean {
+    public procurarEnderecoSalvo(cep: string): boolean {
         const enderecos = this.obterEnderecosSalvos();
 
         if (enderecos.some((x: Endereco) => x.cep === cep)) {
@@ -42,7 +42,7 @@ export default class EnderecoService {
         return false;
     }
 
-    removerEnderecoSalvo(id: number): void {
+    public removerEnderecoSalvo(id: number): void {
         const enderecosSalvos = this.obterEnderecosSalvos();
 
         const indiceEndereco = enderecosSalvos.findIndex((x: Endereco) => x.id === id);
@@ -52,7 +52,7 @@ export default class EnderecoService {
         this.removerFavorito(id);
     }
 
-    alterarEnderecoSalvo(endereco: Endereco): void {
+    public alterarEnderecoSalvo(endereco: Endereco): void {
         const enderecos = this.obterEnderecosSalvos();
         const enderecoParaAlterar = enderecos.filter((x: Endereco) => x.id === endereco.id)[0];
         
@@ -71,7 +71,7 @@ export default class EnderecoService {
         this.salvarEnderecosSalvos(enderecos);
     }
 
-    alterarSituacaoFavorito(id: number): void {
+    public alterarSituacaoFavorito(id: number): void {
         const favoritos = this.obterEnderecosFavoritos();
 
         const indiceFavorito = favoritos.findIndex((x: number) => x === id);
@@ -84,7 +84,7 @@ export default class EnderecoService {
         this.salvarEnderecosFavoritos(favoritos)
     }
 
-    removerFavorito(id: number): void {
+    public removerFavorito(id: number): void {
         const favoritos = this.obterEnderecosFavoritos();
 
         const indiceFavorito = favoritos.findIndex((x: number) => x === id);
@@ -95,7 +95,7 @@ export default class EnderecoService {
         }
     }
 
-    obterEnderecosFavoritos(): number[] {
+    public obterEnderecosFavoritos(): number[] {
         const favoritos = JSON.parse(localStorage.getItem(CHAVE_ENDERECOS_FAVORITOS) || '{}');
 
         if (typeof favoritos === 'object') {
@@ -105,7 +105,7 @@ export default class EnderecoService {
         return favoritos as number[];
     }
 
-    salvarEnderecosFavoritos(enderecos: number[]): void {
+    public salvarEnderecosFavoritos(enderecos: number[]): void {
         localStorage.setItem(CHAVE_ENDERECOS_FAVORITOS, JSON.stringify(enderecos));
     }
 }
