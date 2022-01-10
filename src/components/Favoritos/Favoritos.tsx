@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Endereco } from "../../models/interfaces/EnderecoInterface";
 import EnderecoService from '../../services/EnderecoService';
 import CardEnderecoFavorito from "./components/CardEnderecoFavorito";
 
 function Favoritos() {
 
-    const [favoritos, setFavoritos] = useState([]);
-
+    const [favoritos, setFavoritos] = useState<Endereco[]>([]);
 
     useEffect(() => {
         const service = new EnderecoService();
         const favoritos = service.obterEnderecosFavoritos();
         const salvos = service.obterEnderecosSalvos();
 
-        const favoritosFinal = [];
+        const favoritosFinal: Endereco[] = [];
         salvos.forEach(salvo => {
             if (favoritos.findIndex(x => x === salvo.id) >= 0) {
                 favoritosFinal.push(salvo);
@@ -23,7 +23,7 @@ function Favoritos() {
         setFavoritos(favoritosFinal);
     }, [])
 
-    const removerFavorito = id => {
+    const removerFavorito = (id: number) => {
 
         const service = new EnderecoService();
         service.removerFavorito(id);
