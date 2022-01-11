@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import EnderecoService from "../../services/EnderecoService";
 import { Link, useNavigate } from "react-router-dom";
@@ -11,20 +11,29 @@ function Alterar() {
     let { id } = useParams();
     let navigate = useNavigate();
 
-    const [nome, setNome] = useState('');
-    const [cep, setCep] = useState('');
-    const [logradouro, setLogradouro] = useState('');
-    const [numero, setNumero] = useState('');
-    const [complemento, setComplemento] = useState('');
-    const [bairro, setBairro] = useState('');
-    const [cidade, setCidade] = useState('');
-    const [uf, setUf] = useState('');
+    const [nome, setNome] = useState<string>('');
+    const [cep, setCep] = useState<string>('');
+    const [logradouro, setLogradouro] = useState<string>('');
+    const [numero, setNumero] = useState<string>('');
+    const [complemento, setComplemento] = useState<string>('');
+    const [bairro, setBairro] = useState<string>('');
+    const [cidade, setCidade] = useState<string>('');
+    const [uf, setUf] = useState<string>('');
+    const [idEndereco, setIdEndereco] = useState<number>(0);
 
-    const modalOk = useRef();
+    const [exibirModal, setExibirModal] = useState<boolean>(false);
 
     useEffect(() => {
+
+        if (!id) {
+            navigate('/salvos');
+            return;
+        }
+
+        const idEnd = parseInt(id.toString());
+        setIdEndereco(idEnd);
         const service = new EnderecoService();
-        const endereco = service.obterEnderecoSalvo(id);
+        const endereco = service.obterEnderecoSalvo(idEnd);
         if (endereco === null || endereco === undefined) {
             navigate('/salvos');
             return;
@@ -40,36 +49,26 @@ function Alterar() {
         setUf(endereco.uf);
     }, [id, navigate])
 
-    const tratarNumero = numero => {
+    const tratarNumero = (numero: string) => {
         setNumero(numero);
     }
 
-    const tratarComplemento = complemento => {
+    const tratarComplemento = (complemento: string) => {
         setComplemento(complemento);
     }
 
-    const alterarEndereco = (e) => {
+    const alterarEndereco = (e: any) => {
         e.preventDefault();
 
-        const endereco = {
-            id: id,
-            nome,
-            numero,
-            complemento
-        };
-
         const service = new EnderecoService();
-        service.alterarEnderecoSalvo(endereco);
+        service.alterarEnderecoSalvo(idEndereco, nome, numero, complemento);
 
-        exibirModal();
-    }
-
-    const exibirModal = () => {
-        modalOk.current.exibirModal();
+        setExibirModal(true);
     }
 
     const irParaSalvos = () => {
         navigate('/salvos');
+        return;
     }
 
     return (
@@ -104,7 +103,7 @@ function Alterar() {
                             <input
                                 className="form-control"
                                 placeholder="CEP"
-                                maxLength="8"
+                                maxLength={8}
                                 id="cep"
                                 value={cep}
                                 readOnly={true}
@@ -136,12 +135,12 @@ function Alterar() {
             </div>
 
             <ModalOk
-                ref={modalOk}
                 titulo={'Confirmação de alteração'}
                 texto={'Endereço alterado com sucesso!'}
                 classesBotaoPositivo={'btn btn-success'}
                 textoBotaoPositivo={'Ok'}
-                funcaoOk={irParaSalvos}
+                funcaoBotaoPositivo={irParaSalvos}
+                exibir={exibirModal}
             />
         </div>
     );
