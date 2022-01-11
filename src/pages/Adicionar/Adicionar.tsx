@@ -3,6 +3,8 @@ import CamposComplementares from "../../components/CamposComplementares/CamposCo
 import EnderecoService from '../../services/EnderecoService';
 import ModalOk from "../../components/Modals/ModalOk";
 import { Endereco } from "../../models/interfaces/EnderecoInterface";
+import InputCep, { TAMANHO_CEP } from "../../components/InputCep/InputCep";
+import { useEffect } from "react";
 
 function Adicionar() {
 
@@ -29,19 +31,45 @@ function Adicionar() {
     const [classeBotaoPositivoModal, setClasseBotaoPositivoModal] = useState('');
     const [textoBotaoPositivoModal, setTextoBotaoPositivoModal] = useState('');
 
-    const tratarCep = (valor: string) => {
+    useEffect(() => {
+        const buscarEndereco = () => {
 
-        const cep = valor.replace(/\D/g, '');
-
-        setCep(cep);
-
-        if (cep.length === 8) {
-            buscarEndereco(cep);
+            setNumero('');
+            setComplemento('');
+    
+            const cepParaBusca = cep.replace('-', '');
+            setCarregando(true);
+    
+            fetch(`https://viacep.com.br/ws/${cepParaBusca}/json/`, {
+                method: 'GET'
+            })
+                .then(function (response) {
+                    response.json()
+                        .then(function (resultado) {
+                            if (resultado.erro) {
+                                setErro(true);
+                                setTextoErro('CEP não encontrado! Digite novamente.')
+                            } else {
+                                setErro(false);
+                                setLogradouro(resultado.logradouro);
+                                setBairro(resultado.bairro);
+                                setCidade(resultado.localidade);
+                                setUf(resultado.uf);
+                            }
+                        })
+                })
+                .catch(function (err) {
+                    setErro(true);
+                    setTextoErro('Erro ao obter CEP!');
+                    console.error(`[ERRO]: ${err}`);
+                })
+                .finally(() => setCarregando(false));
         }
 
-        setNumero('');
-        setComplemento('');
-    }
+        if (cep.length === TAMANHO_CEP) {
+            buscarEndereco();
+        }
+    }, [cep])
 
     const tratarNumero = (numero: string) => {
         setNumero(numero);
@@ -49,37 +77,7 @@ function Adicionar() {
 
     const tratarComplemento = (complemento: string) => {
         setComplemento(complemento);
-    }
-
-    const buscarEndereco = (cep: string) => {
-
-        setCarregando(true);
-
-        fetch(`https://viacep.com.br/ws/${cep}/json/`, {
-            method: 'GET'
-        })
-            .then(function (response) {
-                response.json()
-                    .then(function (resultado) {
-                        if (resultado.erro) {
-                            setErro(true);
-                            setTextoErro('CEP não encontrado! Digite novamente.')
-                        } else {
-                            setErro(false);
-                            setLogradouro(resultado.logradouro);
-                            setBairro(resultado.bairro);
-                            setCidade(resultado.localidade);
-                            setUf(resultado.uf);
-                        }
-                    })
-            })
-            .catch(function (err) {
-                setErro(true);
-                setTextoErro(err);
-                console.error(`[ERRO]: ${err}`);
-            })
-            .finally(() => setCarregando(false));
-    }
+    }    
 
     const adicionarEndereco = (e: any) => {
         e.preventDefault();
@@ -168,13 +166,8 @@ function Adicionar() {
                     <div className="col-md-2">
                         <div className="mb-3">
                             <label className="form-label" htmlFor="cep">CEP - <small>apenas números</small></label>
-                            <input
-                                className="form-control"
-                                placeholder="CEP"
-                                maxLength={8}
-                                id="cep"
-                                onChange={ev => tratarCep(ev.target.value)}
-                                value={cep}
+                            <InputCep
+                                setarCep={setCep}
                             />
                         </div>
                     </div>
@@ -192,7 +185,7 @@ function Adicionar() {
 
                     {
 
-                        cep.length === 8 && erro === false ?
+                        cep.length === TAMANHO_CEP && erro === false ?
                             <CamposComplementares
                                 logradouro={logradouro}
                                 bairro={bairro}
@@ -207,7 +200,7 @@ function Adicionar() {
                     }
 
                     {
-                        erro === true && cep.length === 8 && carregando === false ?
+                        erro === true && cep.length === TAMANHO_CEP && carregando === false ?
                             <div className="alert alert-danger">
                                 {textoErro}
                             </div> :
@@ -215,13 +208,15 @@ function Adicionar() {
                     }
 
                     {
-                        cep.length === 8 && erro === false ?
+                        cep.length === TAMANHO_CEP && erro === false ?
                         <div className="mb-3">
                             <button
                                 type="submit"
                                 className="btn btn-success"
                                 disabled={nome === '' || nome === null || numero === '' || numero === null}
-                            >Adicionar</button>
+                            >
+                                Adicionar
+                            </button>
                         </div>:
                         null
                     }
