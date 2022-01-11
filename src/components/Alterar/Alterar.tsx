@@ -5,7 +5,6 @@ import { Link, useNavigate } from "react-router-dom";
 import CamposComplementares from "../Adicionar/components/CamposComplementares";
 import './Alterar.css';
 import ModalOk from "../Modals/ModalOk";
-import { Endereco } from "../../models/interfaces/EnderecoInterface";
 
 function Alterar() {
 
