@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import CardEnderecoInterface from "../../../models/interfaces/CardEnderecoSalvoInterface";
-import CardInformacoes from "../../CardInformacoes/CardInformacoes";
+import CardEnderecoInterface from "../../models/interfaces/CardEnderecoSalvoInterface";
+import CardInformacoes from "../CardInformacoes/CardInformacoes";
 
 function CardEnderecoSalvo(dados: CardEnderecoInterface) {
 
