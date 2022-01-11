@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Endereco } from '../../models/interfaces/EnderecoInterface';
 import EnderecoService from '../../services/EnderecoService';
@@ -10,10 +10,10 @@ function Salvos() {
     const [enderecos, setEnderecos] = useState<Endereco[]>([]);
     const [favoritos, setFavoritos] = useState<number[]>([]);
 
-    const [nomeExclusao, setNomeExclusao] = useState('');
-    const [idExclusao, setIdExclusao] = useState(0);
+    const [nomeExclusao, setNomeExclusao] = useState<string>('');
+    const [idExclusao, setIdExclusao] = useState<number>(0);
 
-    const modalConfirmacao = useRef();
+    const [exibirModal, setExibirModal] = useState<boolean>(false);
 
     useEffect(() => {
         const service = new EnderecoService();
@@ -35,11 +35,11 @@ function Salvos() {
     const exibirModalExclusao = (id: number, nome: string) => {
         setNomeExclusao(nome);
         setIdExclusao(id);
-        exibirModal();
+        setExibirModal(true);
     }
 
-    const exibirModal = () => {
-        //modalConfirmacao.current.exibirModal();
+    const esconderModal = () => {
+        setExibirModal(false);
     }
 
     const excluir = () => {
@@ -50,11 +50,13 @@ function Salvos() {
         enderecos.splice(indiceEndereco, 1);
 
         setEnderecos([...enderecos]);
+        esconderModal();
     }
 
     const naoExcluir = () => {
         setNomeExclusao('');
         setIdExclusao(0);
+        esconderModal();
     }
 
     return (
@@ -87,8 +89,7 @@ function Salvos() {
                         <p>Nenhum endereço salvo. Vá até o <Link to="/">Início</Link> e adicione um.</p>
                 }
 
-                {/* <ModalConfirmacao
-                    ref={modalConfirmacao}
+                <ModalConfirmacao
                     titulo={'Confirmação de exclusão'}
                     texto={`Deseja excluir o endereço "${nomeExclusao}"?`}
                     classesBotaoNegativo={'btn btn-primary'}
@@ -97,7 +98,8 @@ function Salvos() {
                     textoBotaoPositivo={'Excluir'}
                     funcaoBotaoNegativo={naoExcluir}
                     funcaoBotaoPositivo={excluir}
-                /> */}
+                    exibir={exibirModal}
+                />
             </div>
         </div>
     );
