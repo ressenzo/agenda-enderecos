@@ -52,18 +52,21 @@ export default class EnderecoService {
         this.removerFavorito(id);
     }
 
-    public alterarEnderecoSalvo(endereco: Endereco): void {
+    public alterarEnderecoSalvo(id: number,
+            nome: string,
+            numero: string,
+            complemento: string): void {
         const enderecos = this.obterEnderecosSalvos();
-        const enderecoParaAlterar = enderecos.filter((x: Endereco) => x.id === endereco.id)[0];
+        const enderecoParaAlterar = enderecos.filter((x: Endereco) => x.id === id)[0];
         
-        const indiceEndereco = enderecos.findIndex((x: Endereco) => x.id === endereco.id);
+        const indiceEndereco = enderecos.findIndex((x: Endereco) => x.id === id);
         enderecos.splice(indiceEndereco, 1);
         
-        const enderecoAlterado = { 
+        const enderecoAlterado: Endereco = { 
             ...enderecoParaAlterar,
-            nome: endereco.nome,
-            numero: endereco.numero,
-            complemento: endereco.complemento
+            nome: nome,
+            numero: numero,
+            complemento: complemento
         };
 
         enderecos.push(enderecoAlterado);
