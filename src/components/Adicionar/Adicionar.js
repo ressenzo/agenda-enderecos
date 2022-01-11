@@ -233,14 +233,14 @@ function Adicionar() {
                 </form>
             </div>
 
-            <ModalOk
+            {/* <ModalOk
                 ref={modalOk}
                 titulo={tituloModal}
                 texto={textoModal}
                 classesBotaoPositivo={classeBotaoPositivoModal}
                 textoBotaoPositivo={textoBotaoPositivoModal}
                 funcaoOk={esconderModal}
-            />
+            /> */}
         </div>
     );
 }

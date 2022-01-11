@@ -135,14 +135,14 @@ function Alterar() {
                 </form>
             </div>
 
-            <ModalOk
+            {/* <ModalOk
                 ref={modalOk}
                 titulo={'Confirmação de alteração'}
                 texto={'Endereço alterado com sucesso!'}
                 classesBotaoPositivo={'btn btn-success'}
                 textoBotaoPositivo={'Ok'}
                 funcaoOk={irParaSalvos}
-            />
+            /> */}
         </div>
     );
 }
