@@ -1,7 +1,7 @@
 import { useState } from "react";
-import CamposComplementares from "./components/CamposComplementares";
+import CamposComplementares from "../../components/CamposComplementares/CamposComplementares";
 import EnderecoService from '../../services/EnderecoService';
-import ModalOk from "../Modals/ModalOk";
+import ModalOk from "../../components/Modals/ModalOk";
 import { Endereco } from "../../models/interfaces/EnderecoInterface";
 
 function Adicionar() {

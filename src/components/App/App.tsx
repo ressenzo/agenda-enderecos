@@ -3,12 +3,11 @@ import {
   Routes,
   Route
 } from 'react-router-dom';
-import Adicionar from '../Adicionar/Adicionar';
+import Adicionar from '../../pages/Adicionar/Adicionar';
 import Alterar from '../../pages/Alterar/Alterar';
 import Favoritos from '../Favoritos/Favoritos';
 import Menu from '../Menu/Menu';
 import Salvos from '../Salvos/Salvos';
-import './App.css';
 
 function App() {
   return (

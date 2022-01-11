@@ -1,4 +1,4 @@
-import CamposComplementaresInterface from '../../../models/interfaces/CamposComplementaresInterface';
+import CamposComplementaresInterface from '../../models/interfaces/CamposComplementaresInterface';
 
 function CamposComplementares(dados: CamposComplementaresInterface) {
     return (
