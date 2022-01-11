@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import EnderecoService from "../../services/EnderecoService";
 import { Link, useNavigate } from "react-router-dom";
-import CamposComplementares from "../Adicionar/components/CamposComplementares";
+import CamposComplementares from "../../components/Adicionar/components/CamposComplementares";
 import './Alterar.css';
-import ModalOk from "../Modals/ModalOk";
+import ModalOk from "../../components/Modals/ModalOk";
 
 function Alterar() {
 

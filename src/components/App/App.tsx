@@ -4,7 +4,7 @@ import {
   Route
 } from 'react-router-dom';
 import Adicionar from '../Adicionar/Adicionar';
-import Alterar from '../Alterar/Alterar';
+import Alterar from '../../pages/Alterar/Alterar';
 import Favoritos from '../Favoritos/Favoritos';
 import Menu from '../Menu/Menu';
 import Salvos from '../Salvos/Salvos';
