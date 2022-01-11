@@ -79,7 +79,7 @@ function Adicionar() {
         setComplemento(complemento);
     }    
 
-    const adicionarEndereco = (e: any) => {
+    const adicionarEndereco = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const cepJaAdicionado = service.procurarEnderecoSalvo(cep);

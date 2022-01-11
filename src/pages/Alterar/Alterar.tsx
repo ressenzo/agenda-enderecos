@@ -57,7 +57,7 @@ function Alterar() {
         setComplemento(complemento);
     }
 
-    const alterarEndereco = (e: any) => {
+    const alterarEndereco = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const service = new EnderecoService();
