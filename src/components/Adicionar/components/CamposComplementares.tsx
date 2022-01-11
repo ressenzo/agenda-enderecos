@@ -1,13 +1,6 @@
-function CamposComplementares({
-    logradouro,
-    numero,
-    complemento,
-    bairro,
-    cidade,
-    uf,
-    tratarNumero,
-    tratarComplemento
-}) {
+import CamposComplementaresInterface from '../../../models/interfaces/CamposComplementaresInterface';
+
+function CamposComplementares(dados: CamposComplementaresInterface) {
     return (
         <>
             <div className="mb-3">
@@ -17,7 +10,7 @@ function CamposComplementares({
                     className="form-control"
                     placeholder="Logradouro"
                     id="logradouro"
-                    value={logradouro}
+                    value={dados.logradouro}
                 />
             </div>
 
@@ -29,8 +22,8 @@ function CamposComplementares({
                             className="form-control"
                             placeholder="Número"
                             id="numero"
-                            onChange={ev => tratarNumero(ev.target.value)}
-                            value={numero}
+                            onChange={ev => dados.tratarNumero(ev.target.value)}
+                            value={dados.numero}
                         />
                     </div>
                 </div>
@@ -42,8 +35,8 @@ function CamposComplementares({
                             className="form-control"
                             placeholder="Complemento"
                             id="complemento"
-                            onChange={ev => tratarComplemento(ev.target.value)}
-                            value={complemento}
+                            onChange={ev => dados.tratarComplemento(ev.target.value)}
+                            value={dados.complemento}
                         />
                     </div>
                 </div>
@@ -58,7 +51,7 @@ function CamposComplementares({
                             className="form-control"
                             placeholder="Bairro"
                             id="bairro"
-                            value={bairro}
+                            value={dados.bairro}
                         />
                     </div>
                 </div>
@@ -71,7 +64,7 @@ function CamposComplementares({
                             className="form-control"
                             placeholder="Cidade"
                             id="cidade"
-                            value={cidade}
+                            value={dados.cidade}
                         />
                     </div>
                 </div>
@@ -84,7 +77,7 @@ function CamposComplementares({
                             className="form-control"
                             placeholder="UF"
                             id="uf"
-                            value={uf}
+                            value={dados.uf}
                         />
                     </div>
                 </div>

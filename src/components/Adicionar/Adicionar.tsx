@@ -1,34 +1,35 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import CamposComplementares from "./components/CamposComplementares";
 import EnderecoService from '../../services/EnderecoService';
 import ModalOk from "../Modals/ModalOk";
+import { Endereco } from "../../models/interfaces/EnderecoInterface";
 
 function Adicionar() {
 
-    const [nome, setNome] = useState('');
-    const [cep, setCep] = useState('');
-    const [logradouro, setLogradouro] = useState('');
-    const [numero, setNumero] = useState('');
-    const [complemento, setComplemento] = useState('');
-    const [bairro, setBairro] = useState('');
-    const [cidade, setCidade] = useState('');
-    const [uf, setUf] = useState('');
+    const [nome, setNome] = useState<string>('');
+    const [cep, setCep] = useState<string>('');
+    const [logradouro, setLogradouro] = useState<string>('');
+    const [numero, setNumero] = useState<string>('');
+    const [complemento, setComplemento] = useState<string>('');
+    const [bairro, setBairro] = useState<string>('');
+    const [cidade, setCidade] = useState<string>('');
+    const [uf, setUf] = useState<string>('');
 
-    const [erro, setErro] = useState(true);
-    const [textoErro, setTextoErro] = useState('');
+    const [erro, setErro] = useState<boolean>(true);
+    const [textoErro, setTextoErro] = useState<string>('');
 
-    const [carregando, setCarregando] = useState(false);
+    const [carregando, setCarregando] = useState<boolean>(false);
+
+    const [exibirModal, setExibirModal] = useState<boolean>(false);
 
     const service = new EnderecoService();
-
-    const modalOk = useRef();
 
     const [tituloModal, setTituloModal] = useState('');
     const [textoModal, setTextoModal] = useState('');
     const [classeBotaoPositivoModal, setClasseBotaoPositivoModal] = useState('');
     const [textoBotaoPositivoModal, setTextoBotaoPositivoModal] = useState('');
 
-    const tratarCep = valor => {
+    const tratarCep = (valor: string) => {
 
         const cep = valor.replace(/\D/g, '');
 
@@ -42,15 +43,15 @@ function Adicionar() {
         setComplemento('');
     }
 
-    const tratarNumero = numero => {
+    const tratarNumero = (numero: string) => {
         setNumero(numero);
     }
 
-    const tratarComplemento = complemento => {
+    const tratarComplemento = (complemento: string) => {
         setComplemento(complemento);
     }
 
-    const buscarEndereco = cep => {
+    const buscarEndereco = (cep: string) => {
 
         setCarregando(true);
 
@@ -80,7 +81,7 @@ function Adicionar() {
             .finally(() => setCarregando(false));
     }
 
-    const adicionarEndereco = (e) => {
+    const adicionarEndereco = (e: any) => {
         e.preventDefault();
 
         const cepJaAdicionado = service.procurarEnderecoSalvo(cep);
@@ -90,7 +91,7 @@ function Adicionar() {
             return;
         }
         
-        const endereco = {
+        const endereco: Endereco = {
             id: new Date().getTime(),
             nome,
             cep,
@@ -112,7 +113,7 @@ function Adicionar() {
         setClasseBotaoPositivoModal('btn btn-primary');
         setTextoBotaoPositivoModal('Ok');
 
-        exibirModal();
+        setExibirModal(true);
     }
 
     const estadoInicial = () => {
@@ -139,16 +140,11 @@ function Adicionar() {
         setClasseBotaoPositivoModal('btn btn-success');
         setTextoBotaoPositivoModal('Ok');
 
-        exibirModal();
-    }
-
-    const exibirModal = () => {
-
-        modalOk.current.exibirModal();
+        setExibirModal(true);
     }
 
     const esconderModal = () => {
-        modalOk.current.esconderModal();
+        setExibirModal(false);
     }
 
     return (
@@ -175,7 +171,7 @@ function Adicionar() {
                             <input
                                 className="form-control"
                                 placeholder="CEP"
-                                maxLength="8"
+                                maxLength={8}
                                 id="cep"
                                 onChange={ev => tratarCep(ev.target.value)}
                                 value={cep}
@@ -206,7 +202,6 @@ function Adicionar() {
                                 uf={uf}
                                 tratarNumero={tratarNumero}
                                 tratarComplemento={tratarComplemento}
-                                clicarAdicionar={adicionarEndereco}
                             /> :
                             null
                     }
@@ -233,14 +228,14 @@ function Adicionar() {
                 </form>
             </div>
 
-            {/* <ModalOk
-                ref={modalOk}
+            <ModalOk
                 titulo={tituloModal}
                 texto={textoModal}
                 classesBotaoPositivo={classeBotaoPositivoModal}
                 textoBotaoPositivo={textoBotaoPositivoModal}
-                funcaoOk={esconderModal}
-            /> */}
+                exibir={exibirModal}
+                funcaoBotaoPositivo={esconderModal}
+            />
         </div>
     );
 }
