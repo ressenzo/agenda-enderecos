@@ -5,9 +5,9 @@ import {
 } from 'react-router-dom';
 import Adicionar from '../../pages/Adicionar/Adicionar';
 import Alterar from '../../pages/Alterar/Alterar';
-import Favoritos from '../Favoritos/Favoritos';
+import Favoritos from '../../pages/Favoritos/Favoritos';
 import Menu from '../Menu/Menu';
-import Salvos from '../Salvos/Salvos';
+import Salvos from '../../pages/Salvos/Salvos';
 
 function App() {
   return (
