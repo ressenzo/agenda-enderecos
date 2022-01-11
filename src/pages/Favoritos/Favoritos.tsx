@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Endereco } from "../../models/interfaces/EnderecoInterface";
 import EnderecoService from '../../services/EnderecoService';
-import CardEnderecoFavorito from "./components/CardEnderecoFavorito";
+import CardEnderecoFavorito from "../../components/CardEnderecoFavorito/CardEnderecoFavorito";
 
 function Favoritos() {
 
