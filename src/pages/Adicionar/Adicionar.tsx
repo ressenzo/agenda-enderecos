@@ -5,6 +5,7 @@ import ModalOk from "../../components/Modals/ModalOk";
 import { Endereco } from "../../models/interfaces/EnderecoInterface";
 import InputCep, { TAMANHO_CEP } from "../../components/InputCep/InputCep";
 import { useEffect } from "react";
+import ResultadoConsultaCepInterface from "../../models/interfaces/ResultadoConsultaCepInterface";
 
 function Adicionar() {
 
@@ -43,27 +44,27 @@ function Adicionar() {
             fetch(`https://viacep.com.br/ws/${cepParaBusca}/json/`, {
                 method: 'GET'
             })
-                .then(function (response) {
-                    response.json()
-                        .then(function (resultado) {
-                            if (resultado.erro) {
-                                setErro(true);
-                                setTextoErro('CEP não encontrado! Digite novamente.')
-                            } else {
-                                setErro(false);
-                                setLogradouro(resultado.logradouro);
-                                setBairro(resultado.bairro);
-                                setCidade(resultado.localidade);
-                                setUf(resultado.uf);
-                            }
-                        })
-                })
-                .catch(function (err) {
-                    setErro(true);
-                    setTextoErro('Erro ao obter CEP!');
-                    console.error(`[ERRO]: ${err}`);
-                })
-                .finally(() => setCarregando(false));
+            .then(function (response) {
+                response.json()
+                    .then((resultado: ResultadoConsultaCepInterface) => {
+                        if (resultado.erro) {
+                            setErro(true);
+                            setTextoErro('CEP não encontrado! Digite novamente.')
+                        } else {
+                            setErro(false);
+                            setLogradouro(resultado.logradouro);
+                            setBairro(resultado.bairro);
+                            setCidade(resultado.localidade);
+                            setUf(resultado.uf);
+                        }
+                    })
+            })
+            .catch((err: any) => {
+                setErro(true);
+                setTextoErro('Erro ao obter CEP!');
+                console.error(`[ERRO]: ${err}`);
+            })
+            .finally(() => setCarregando(false));
         }
 
         if (cep.length === TAMANHO_CEP) {
