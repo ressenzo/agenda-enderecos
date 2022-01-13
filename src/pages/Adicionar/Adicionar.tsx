@@ -165,9 +165,10 @@ function Adicionar() {
 
                     <div className="col-md-2">
                         <div className="mb-3">
-                            <label className="form-label" htmlFor="cep">CEP - <small>apenas números</small></label>
                             <InputCep
                                 setarCep={setCep}
+                                textoLabel="CEP"
+                                placeholder="99999-999"
                             />
                         </div>
                     </div>

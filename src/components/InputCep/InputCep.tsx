@@ -16,12 +16,15 @@ function InputCep(dados: InputCepInterface) {
     }
 
     return (
-        <input
-            className="form-control"
-            placeholder="CEP"
-            id="cep"
-            onChange={ev => tratarCep(ev)}
-        />
+        <>
+            <label className="form-label" htmlFor="cep">{dados.textoLabel}</label>
+            <input
+                className="form-control"
+                placeholder={dados.placeholder}
+                id="cep"
+                onChange={ev => tratarCep(ev)}
+            />
+        </>
     );
 }
 
