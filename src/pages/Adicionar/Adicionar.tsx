@@ -6,6 +6,7 @@ import { Endereco } from "../../models/interfaces/EnderecoInterface";
 import InputCep, { TAMANHO_CEP } from "../../components/InputCep/InputCep";
 import { useEffect } from "react";
 import ResultadoConsultaCepInterface from "../../models/interfaces/ResultadoConsultaCepInterface";
+import ConsultaCepService from "../../services/ConsultaCepService";
 
 function Adicionar() {
 
@@ -33,32 +34,18 @@ function Adicionar() {
     const [textoBotaoPositivoModal, setTextoBotaoPositivoModal] = useState('');
 
     useEffect(() => {
-        const buscarEndereco = () => {
-
+        const buscarEndereco = async () => {
             setNumero('');
             setComplemento('');
 
             const cepParaBusca = cep.replace('-', '');
             setCarregando(true);
 
-            fetch(`https://viacep.com.br/ws/${cepParaBusca}/json/`, {
-                method: 'GET'
-            })
-            .then(function (response) {
-                response.json()
-                    .then((resultado: ResultadoConsultaCepInterface) => {
-                        if (resultado.erro) {
-                            setErro(true);
-                            setTextoErro('CEP não encontrado! Digite novamente.')
-                        } else {
-                            setErro(false);
-                            setLogradouro(resultado.logradouro);
-                            setBairro(resultado.bairro);
-                            setCidade(resultado.localidade);
-                            setUf(resultado.uf);
-                        }
-                    })
-            })
+            const consultaCepService = new ConsultaCepService();
+            await consultaCepService.consultarCep(cepParaBusca)
+            .then((resultado: ResultadoConsultaCepInterface) => {
+                tratarResultadoConsulta(resultado);
+            })            
             .catch((err: any) => {
                 setErro(true);
                 setTextoErro('Erro ao obter CEP!');
@@ -71,6 +58,19 @@ function Adicionar() {
             buscarEndereco();
         }
     }, [cep])
+
+    const tratarResultadoConsulta = (resultado: ResultadoConsultaCepInterface) => {
+        if (resultado.erro) {
+            setErro(true);
+            setTextoErro('CEP não encontrado! Digite novamente.')
+        } else {
+            setErro(false);
+            setLogradouro(resultado.logradouro);
+            setBairro(resultado.bairro);
+            setCidade(resultado.localidade);
+            setUf(resultado.uf);
+        }
+    }
 
     const tratarNumero = (numero: string) => {
         setNumero(numero);
