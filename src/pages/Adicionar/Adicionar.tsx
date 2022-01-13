@@ -36,10 +36,10 @@ function Adicionar() {
 
             setNumero('');
             setComplemento('');
-    
+
             const cepParaBusca = cep.replace('-', '');
             setCarregando(true);
-    
+
             fetch(`https://viacep.com.br/ws/${cepParaBusca}/json/`, {
                 method: 'GET'
             })
@@ -77,7 +77,7 @@ function Adicionar() {
 
     const tratarComplemento = (complemento: string) => {
         setComplemento(complemento);
-    }    
+    }
 
     const adicionarEndereco = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -88,7 +88,7 @@ function Adicionar() {
             exibirModalCepJaAdicionado();
             return;
         }
-        
+
         const endereco: Endereco = {
             id: new Date().getTime(),
             nome,
@@ -128,7 +128,7 @@ function Adicionar() {
         setTextoErro('');
 
         setCarregando(false);
-        
+
         exibirModalSucessoCadastro();
     }
 
@@ -143,6 +143,18 @@ function Adicionar() {
 
     const esconderModal = () => {
         setExibirModal(false);
+    }
+
+    const exibirFormularioCompleto = (): boolean => {
+        return cep.length === TAMANHO_CEP &&
+            erro === false &&
+            carregando === false;
+    }
+
+    const exibirErro = (): boolean => {
+        return erro === true &&
+            cep.length === TAMANHO_CEP &&
+            carregando === false;
     }
 
     return (
@@ -186,7 +198,7 @@ function Adicionar() {
 
                     {
 
-                        cep.length === TAMANHO_CEP && erro === false ?
+                        exibirFormularioCompleto() ?
                             <CamposComplementares
                                 logradouro={logradouro}
                                 bairro={bairro}
@@ -201,7 +213,7 @@ function Adicionar() {
                     }
 
                     {
-                        erro === true && cep.length === TAMANHO_CEP && carregando === false ?
+                        exibirErro() ?
                             <div className="alert alert-danger">
                                 {textoErro}
                             </div> :
@@ -209,17 +221,17 @@ function Adicionar() {
                     }
 
                     {
-                        cep.length === TAMANHO_CEP && erro === false ?
-                        <div className="mb-3">
-                            <button
-                                type="submit"
-                                className="btn btn-success"
-                                disabled={nome === '' || nome === null || numero === '' || numero === null}
-                            >
-                                Adicionar
-                            </button>
-                        </div>:
-                        null
+                        exibirFormularioCompleto() ?
+                            <div className="mb-3">
+                                <button
+                                    type="submit"
+                                    className="btn btn-success"
+                                    disabled={nome === '' || nome === null || numero === '' || numero === null}
+                                >
+                                    Adicionar
+                                </button>
+                            </div> :
+                            null
                     }
                 </form>
             </div>
