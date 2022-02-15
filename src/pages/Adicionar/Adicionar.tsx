@@ -6,7 +6,7 @@ import { Endereco } from "../../models/interfaces/EnderecoInterface";
 import InputCep, { TAMANHO_CEP } from "../../components/InputCep/InputCep";
 import { useEffect } from "react";
 import ResultadoConsultaCepInterface from "../../models/interfaces/ResultadoConsultaCepInterface";
-import ConsultaCepService from "../../services/ConsultaCepService";
+import CepService from "../../services/CepService";
 
 function Adicionar() {
 
@@ -41,7 +41,7 @@ function Adicionar() {
             const cepParaBusca = cep.replace('-', '');
             setCarregando(true);
 
-            const consultaCepService = new ConsultaCepService();
+            const consultaCepService = new CepService();
             await consultaCepService.consultarCep(cepParaBusca)
             .then((resultado: ResultadoConsultaCepInterface) => {
                 tratarResultadoConsulta(resultado);

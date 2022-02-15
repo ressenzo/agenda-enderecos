@@ -1,6 +1,6 @@
 import ResultadoConsultaCepInterface from "../models/interfaces/ResultadoConsultaCepInterface";
 
-export default class ConsultaCepService {
+export default class CepService {
 
     public async consultarCep(cep: string): Promise<ResultadoConsultaCepInterface> {
 
