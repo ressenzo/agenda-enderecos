@@ -200,16 +200,28 @@ function Adicionar() {
                     {
 
                         exibirFormularioCompleto() ?
-                            <CamposComplementares
-                                logradouro={logradouro}
-                                bairro={bairro}
-                                cidade={cidade}
-                                complemento={complemento}
-                                numero={numero}
-                                uf={uf}
-                                tratarNumero={tratarNumero}
-                                tratarComplemento={tratarComplemento}
-                            /> :
+                            <>
+                                <CamposComplementares
+                                    logradouro={logradouro}
+                                    bairro={bairro}
+                                    cidade={cidade}
+                                    complemento={complemento}
+                                    numero={numero}
+                                    uf={uf}
+                                    tratarNumero={tratarNumero}
+                                    tratarComplemento={tratarComplemento}
+                                /> 
+                                <div className="mb-3">
+                                    <button
+                                        type="submit"
+                                        className="btn btn-success"
+                                        disabled={nome === '' || nome === null || numero === '' || numero === null}
+                                    >
+                                        Adicionar
+                                    </button>
+                                </div>
+                            </>
+                            :
                             null
                     }
 
@@ -217,20 +229,6 @@ function Adicionar() {
                         exibirErro() ?
                             <div className="alert alert-danger">
                                 {textoErro}
-                            </div> :
-                            null
-                    }
-
-                    {
-                        exibirFormularioCompleto() ?
-                            <div className="mb-3">
-                                <button
-                                    type="submit"
-                                    className="btn btn-success"
-                                    disabled={nome === '' || nome === null || numero === '' || numero === null}
-                                >
-                                    Adicionar
-                                </button>
                             </div> :
                             null
                     }
