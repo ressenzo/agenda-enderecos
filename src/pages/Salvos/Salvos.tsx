@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Endereco } from '../../models/interfaces/EnderecoInterface';
 import EnderecoService from '../../services/EnderecoService';
-import ModalConfirmacao from '../Modals/ModalConfirmacao';
-import CardEnderecoSalvo from './Components/CardEnderecoSalvo';
+import ModalConfirmacao from '../../components/Modals/ModalConfirmacao';
+import CardEnderecoSalvo from '../../components/CardEnderecoSalvo/CardEnderecoSalvo';
 
 function Salvos() {
 

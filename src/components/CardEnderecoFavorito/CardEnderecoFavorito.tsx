@@ -1,5 +1,5 @@
-import CardEnderecoFavoritoInterface from "../../../models/interfaces/CardEnderecoFavoritoInterface";
-import CardInformacoes from "../../CardInformacoes/CardInformacoes";
+import CardEnderecoFavoritoInterface from "../../models/interfaces/CardEnderecoFavoritoInterface";
+import CardInformacoes from "../CardInformacoes/CardInformacoes";
 
 function CardEnderecoFavorito(dados: CardEnderecoFavoritoInterface) {
     return (

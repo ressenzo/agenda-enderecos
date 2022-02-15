@@ -1,8 +1,12 @@
 import { useState } from "react";
-import CamposComplementares from "./components/CamposComplementares";
+import CamposComplementares from "../../components/CamposComplementares/CamposComplementares";
 import EnderecoService from '../../services/EnderecoService';
-import ModalOk from "../Modals/ModalOk";
+import ModalOk from "../../components/Modals/ModalOk";
 import { Endereco } from "../../models/interfaces/EnderecoInterface";
+import InputCep, { TAMANHO_CEP } from "../../components/InputCep/InputCep";
+import { useEffect } from "react";
+import ResultadoConsultaCepInterface from "../../models/interfaces/ResultadoConsultaCepInterface";
+import CepService from "../../services/CepService";
 
 function Adicionar() {
 
@@ -29,18 +33,43 @@ function Adicionar() {
     const [classeBotaoPositivoModal, setClasseBotaoPositivoModal] = useState('');
     const [textoBotaoPositivoModal, setTextoBotaoPositivoModal] = useState('');
 
-    const tratarCep = (valor: string) => {
+    useEffect(() => {
+        const buscarEndereco = async () => {
+            setNumero('');
+            setComplemento('');
 
-        const cep = valor.replace(/\D/g, '');
+            const cepParaBusca = cep.replace('-', '');
+            setCarregando(true);
 
-        setCep(cep);
-
-        if (cep.length === 8) {
-            buscarEndereco(cep);
+            const consultaCepService = new CepService();
+            await consultaCepService.consultarCep(cepParaBusca)
+            .then((resultado: ResultadoConsultaCepInterface) => {
+                tratarResultadoConsulta(resultado);
+            })            
+            .catch((err: any) => {
+                setErro(true);
+                setTextoErro('Erro ao obter CEP!');
+                console.error(`[ERRO]: ${err}`);
+            })
+            .finally(() => setCarregando(false));
         }
 
-        setNumero('');
-        setComplemento('');
+        if (cep.length === TAMANHO_CEP) {
+            buscarEndereco();
+        }
+    }, [cep])
+
+    const tratarResultadoConsulta = (resultado: ResultadoConsultaCepInterface) => {
+        if (resultado.erro) {
+            setErro(true);
+            setTextoErro('CEP não encontrado! Digite novamente.')
+        } else {
+            setErro(false);
+            setLogradouro(resultado.logradouro);
+            setBairro(resultado.bairro);
+            setCidade(resultado.localidade);
+            setUf(resultado.uf);
+        }
     }
 
     const tratarNumero = (numero: string) => {
@@ -51,37 +80,7 @@ function Adicionar() {
         setComplemento(complemento);
     }
 
-    const buscarEndereco = (cep: string) => {
-
-        setCarregando(true);
-
-        fetch(`https://viacep.com.br/ws/${cep}/json/`, {
-            method: 'GET'
-        })
-            .then(function (response) {
-                response.json()
-                    .then(function (resultado) {
-                        if (resultado.erro) {
-                            setErro(true);
-                            setTextoErro('CEP não encontrado! Digite novamente.')
-                        } else {
-                            setErro(false);
-                            setLogradouro(resultado.logradouro);
-                            setBairro(resultado.bairro);
-                            setCidade(resultado.localidade);
-                            setUf(resultado.uf);
-                        }
-                    })
-            })
-            .catch(function (err) {
-                setErro(true);
-                setTextoErro(err);
-                console.error(`[ERRO]: ${err}`);
-            })
-            .finally(() => setCarregando(false));
-    }
-
-    const adicionarEndereco = (e: any) => {
+    const adicionarEndereco = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const cepJaAdicionado = service.procurarEnderecoSalvo(cep);
@@ -90,7 +89,7 @@ function Adicionar() {
             exibirModalCepJaAdicionado();
             return;
         }
-        
+
         const endereco: Endereco = {
             id: new Date().getTime(),
             nome,
@@ -130,7 +129,7 @@ function Adicionar() {
         setTextoErro('');
 
         setCarregando(false);
-        
+
         exibirModalSucessoCadastro();
     }
 
@@ -145,6 +144,18 @@ function Adicionar() {
 
     const esconderModal = () => {
         setExibirModal(false);
+    }
+
+    const exibirFormularioCompleto = (): boolean => {
+        return cep.length === TAMANHO_CEP &&
+            erro === false &&
+            carregando === false;
+    }
+
+    const exibirErro = (): boolean => {
+        return erro === true &&
+            cep.length === TAMANHO_CEP &&
+            carregando === false;
     }
 
     return (
@@ -167,14 +178,10 @@ function Adicionar() {
 
                     <div className="col-md-2">
                         <div className="mb-3">
-                            <label className="form-label" htmlFor="cep">CEP - <small>apenas números</small></label>
-                            <input
-                                className="form-control"
-                                placeholder="CEP"
-                                maxLength={8}
-                                id="cep"
-                                onChange={ev => tratarCep(ev.target.value)}
-                                value={cep}
+                            <InputCep
+                                setarCep={setCep}
+                                textoLabel="CEP"
+                                placeholder="99999-999"
                             />
                         </div>
                     </div>
@@ -192,38 +199,38 @@ function Adicionar() {
 
                     {
 
-                        cep.length === 8 && erro === false ?
-                            <CamposComplementares
-                                logradouro={logradouro}
-                                bairro={bairro}
-                                cidade={cidade}
-                                complemento={complemento}
-                                numero={numero}
-                                uf={uf}
-                                tratarNumero={tratarNumero}
-                                tratarComplemento={tratarComplemento}
-                            /> :
+                        exibirFormularioCompleto() ?
+                            <>
+                                <CamposComplementares
+                                    logradouro={logradouro}
+                                    bairro={bairro}
+                                    cidade={cidade}
+                                    complemento={complemento}
+                                    numero={numero}
+                                    uf={uf}
+                                    tratarNumero={tratarNumero}
+                                    tratarComplemento={tratarComplemento}
+                                /> 
+                                <div className="mb-3">
+                                    <button
+                                        type="submit"
+                                        className="btn btn-success"
+                                        disabled={nome === '' || nome === null || numero === '' || numero === null}
+                                    >
+                                        Adicionar
+                                    </button>
+                                </div>
+                            </>
+                            :
                             null
                     }
 
                     {
-                        erro === true && cep.length === 8 && carregando === false ?
+                        exibirErro() ?
                             <div className="alert alert-danger">
                                 {textoErro}
                             </div> :
                             null
-                    }
-
-                    {
-                        cep.length === 8 && erro === false ?
-                        <div className="mb-3">
-                            <button
-                                type="submit"
-                                className="btn btn-success"
-                                disabled={nome === '' || nome === null || numero === '' || numero === null}
-                            >Adicionar</button>
-                        </div>:
-                        null
                     }
                 </form>
             </div>
