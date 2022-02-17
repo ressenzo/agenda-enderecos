@@ -8,13 +8,20 @@ import Alterar from '../../pages/Alterar/Alterar';
 import Favoritos from '../../pages/Favoritos/Favoritos';
 import Menu from '../Menu/Menu';
 import Salvos from '../../pages/Salvos/Salvos';
+import Login from '../../pages/Login/Login';
+import { useState } from 'react';
 
 function App() {
+
+  // TODO Alterar para obter variável dinamicamente
+  const [exibirMenu, setExibirMenu] = useState<boolean>(false);
+
   return (
     <Router>
-      <Menu />
+      { exibirMenu ?? <Menu  /> }
       <Routes>
         <Route path='/' element={<Adicionar />} />
+        <Route path='/login' element={<Login />} />
         <Route path='/salvos' element={<Salvos />} />
         <Route path='/favoritos' element={<Favoritos />} />
         <Route path='/alterar/:id' element={<Alterar />} />
