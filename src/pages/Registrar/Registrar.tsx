@@ -24,19 +24,19 @@ function Registrar() {
 
     const inputConfirmarSenha = () => {
         return <div className="mb-3">
-                <input
-                    type="password"
-                    className="form-control"
-                    placeholder="Confirmar senha"
-                    onChange={ev => setConfSenha(ev.target.value)}
-                    id="confSenha"
-                />
-                {
-                    senhasIncorretas() ?
+            <input
+                type="password"
+                className="form-control"
+                placeholder="Confirmar senha"
+                onChange={ev => setConfSenha(ev.target.value)}
+                id="confSenha"
+            />
+            {
+                senhasIncorretas() ?
                     <small className="mt-1 text-small text-danger">Senhas não correspondem</small> :
                     null
-                }
-            </div>
+            }
+        </div>
     }
 
     return (
@@ -48,8 +48,11 @@ function Registrar() {
                 exibirLoading={registrando}
                 textoBotao="Registrar"
                 tituloFormulario="Registrar"
-                children={inputConfirmarSenha()}
-            />
+            >
+                {
+                    inputConfirmarSenha()
+                }
+            </FormularioLogin>
             <div>
                 <p>Já é cadastrado? <Link to="/login">Faça seu login</Link></p>
             </div>
