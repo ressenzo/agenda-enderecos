@@ -9,6 +9,7 @@ import Favoritos from '../../pages/Favoritos/Favoritos';
 import Menu from '../Menu/Menu';
 import Salvos from '../../pages/Salvos/Salvos';
 import Login from '../../pages/Login/Login';
+import Registrar from '../../pages/Registrar/Registrar';
 import { useState } from 'react';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Adicionar />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/registrar' element={<Registrar />} />
         <Route path='/salvos' element={<Salvos />} />
         <Route path='/favoritos' element={<Favoritos />} />
         <Route path='/alterar/:id' element={<Alterar />} />
