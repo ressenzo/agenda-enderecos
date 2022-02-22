@@ -4,13 +4,13 @@ function FormularioLogin({
     onChangeEmail,
     onChangeSenha,
     tituloFormulario,
-    aoClicarBotao,
+    submitForm,
     exibirLoading,
     textoBotao,
     children
 }: FormularioLoginInterface) {
     return (
-        <form>
+        <form onSubmit={submitForm}>
             <h1 className="h3 mb-3 fw-normal">{tituloFormulario}</h1>
 
             <div className="mb-3">
@@ -40,7 +40,6 @@ function FormularioLogin({
                 <button
                     className="w-100 btn btn-lg btn-success"
                     type="submit"
-                    onClick={aoClicarBotao}
                     disabled={exibirLoading}
                 >
                     {

@@ -10,7 +10,7 @@ function Registrar() {
     const [confSenha, setConfSenha] = useState<string>('');
     const [registrando, setRegistrando] = useState<boolean>(false);
 
-    const registrar = () => {
+    const registrar = (e: React.FormEvent<HTMLFormElement>) => {
         setRegistrando(true);
     }
 
@@ -44,7 +44,7 @@ function Registrar() {
             <FormularioLogin
                 onChangeEmail={setEmail}
                 onChangeSenha={setSenha}
-                aoClicarBotao={registrar}
+                submitForm={registrar}
                 exibirLoading={registrando}
                 textoBotao="Registrar"
                 tituloFormulario="Registrar"

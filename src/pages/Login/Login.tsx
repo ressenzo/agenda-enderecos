@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import FormularioLogin from '../../components/FormularioLogin/FormularioLogin';
 import './Login.css';
+import UsuarioService from '../../services/UsuarioService';
 
 function Login() {
 
@@ -9,15 +10,19 @@ function Login() {
     const [senha, setSenha] = useState<string>('');
     const [entrando, setEntrando] = useState<boolean>(false);
 
-    const entrar = () => {
+    const entrar = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         setEntrando(true);
+        const service = new UsuarioService();
+        service.logar(email, senha);
+        setEntrando(false);
     }
 
     return (
         <main className="login-form-signin">
             <FormularioLogin
                 tituloFormulario="Entrar"
-                aoClicarBotao={entrar}
+                submitForm={entrar}
                 exibirLoading={entrando}
                 textoBotao="Entrar"
                 onChangeEmail={setEmail}
