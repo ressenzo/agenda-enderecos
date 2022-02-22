@@ -14,7 +14,7 @@ function Login() {
     }
 
     return (
-        <main className="form-signin">
+        <main className="login-form-signin">
             <FormularioLogin
                 tituloFormulario="Entrar"
                 aoClicarBotao={entrar}

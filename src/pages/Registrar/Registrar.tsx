@@ -40,7 +40,7 @@ function Registrar() {
     }
 
     return (
-        <main className="form-signin">
+        <main className="registrar-form-signin">
             <FormularioLogin
                 onChangeEmail={setEmail}
                 onChangeSenha={setSenha}
