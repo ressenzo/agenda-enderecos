@@ -4,6 +4,10 @@ import FormularioLogin from '../../components/FormularioLogin/FormularioLogin';
 import './Login.css';
 import UsuarioService from '../../services/UsuarioService';
 import ResultadoLogarInterface from '../../models/interfaces/ResultadoLogarInterface';
+import { AppDispatch } from '../../app/store';
+import { useDispatch } from 'react-redux';
+import { adicionar } from '../../slices/UsuarioSlice';
+import { useNavigate } from "react-router-dom";
 
 function Login() {
 
@@ -14,13 +18,18 @@ function Login() {
     const [erro, setErro] = useState<boolean>(false);
     const [textoErro, setTextoErro] = useState<string>('');
 
+    const dispatch: AppDispatch = useDispatch();
+
+    let navigate = useNavigate();
+
     const entrar = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setEntrando(true);
         const service = new UsuarioService();
         service.logar(email, senha)
         .then((resultado: ResultadoLogarInterface) => {
-            
+            const usuario = { email: resultado.email, ehPremium: resultado.ehPremium };
+            dispatch(adicionar(usuario));
         })
         .catch((err: any) => {
             setErro(true);

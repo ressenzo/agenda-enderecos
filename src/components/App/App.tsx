@@ -12,18 +12,18 @@ import Login from '../../pages/Login/Login';
 import Registrar from '../../pages/Registrar/Registrar';
 import { useEffect, useState } from 'react';
 import { useAppSelector } from '../../app/hooks';
-import Usuario from '../../models/UsuarioModel';
 
 function App() {
 
   // TODO Alterar para obter variável dinamicamente
   const [exibirMenu, setExibirMenu] = useState<boolean>(false);
-  const usuario = useAppSelector(state => state.usuario) as Usuario;
+  const usuario = useAppSelector(state => state.usuario) as any;
 
   useEffect(() => {
-    if (usuario.email !== '' &&
-    usuario.email !== null &&
-    usuario.email !== undefined) {
+    if (usuario.value &&
+      usuario.value.email !== '' &&
+      usuario.value.email !== null &&
+      usuario.value.email !== undefined) {
       setExibirMenu(true);
     }
   }, [usuario])

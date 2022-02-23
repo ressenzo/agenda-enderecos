@@ -4,8 +4,8 @@ export const usuarioSlice = createSlice({
     name: 'usuario',
     initialState: {},
     reducers: {
-        adicionar: (state) => {
-            state = state;
+        adicionar: (state: any, action) => {
+            state.value = action.payload;
         }
     }
 })
